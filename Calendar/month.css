@@ -1,0 +1,196 @@
+* {
+  padding: 0;
+  margin: 0;
+  /* Match week view font stack for visual parity */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  /* Explicit font and size to ensure calendar.php matches week.php */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  /* Use shared calendar background variable so all calendar pages match */
+  background: var(--cal-bg);
+}
+
+/* menu appearance is controlled globally in calendar.css to keep all pages consistent */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+  width: 100%;
+}
+
+.calendar {
+  width: 100%;
+  /* slightly translucent so the page background is visible behind the card */
+  background-color: rgba(255,255,255,0.92);
+  border-radius: 25px;
+  padding: 35px 50px 20px 50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+/* Responsive tweaks for mobile */
+@media screen and (max-width: 900px) {
+  .container { padding: 12px; }
+  .calendar { max-width: 100%; padding: 18px; border-radius: 14px; }
+  .calendar-header { padding: 8px; }
+  .calendar-week-days { font-size: 0.95rem; }
+  .calendar-day { height: 90px; }
+}
+
+@media screen and (max-width: 420px) {
+  /* Menu responsive tweaks are centralized in calendar.css */
+  .calendar { padding: 12px; border-radius: 10px; }
+  .calendar-day { height: 80px; font-size: 0.9rem; }
+  .calendar-week-days { font-size: 0.9rem; }
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  /* remove bottom gap so week-days can sit flush under the header */
+  margin-bottom: 0;
+  /* Match week view header look */
+  background: #2fc5f3;
+  color: #fff;
+  /* round only the top corners */
+  border-radius: 8px 8px 0 0;
+  padding: 10px;
+}
+
+.month-year-controls,
+.year-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Prev/Next month/year arrows/buttons styling to match week view */
+#prev-month, #next-month, #prev-year, #next-year, .month-year-controls button {
+  background: #2fc5f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+#prev-month:hover, #next-month:hover, #prev-year:hover, #next-year:hover, .month-year-controls button:hover {
+  background: #24a9c6;
+}
+
+/* Month title: use normal weight per user request */
+#month-year { font-weight: normal; color: #fff; }
+
+.calendar-week-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.1rem;
+  color: #fff;
+  /* sit flush with header: no margin */
+  margin: 0;
+  overflow: hidden;
+  /* Use same blue background and round only the bottom corners */
+  background: #2fc5f3;
+  border-radius: 0 0 8px 8px;
+}
+
+.calendar-week-days div {
+  padding: 10px 0;
+  background-color: transparent;
+}
+
+/* Dark mode: avoid white empty blocks inside month grid */
+.dark-mode .calendar-day,
+.dark-mode .calendar-day.empty {
+  background: transparent !important;
+  color: #e6eef6 !important;
+}
+
+/* Dark mode: make the calendar card itself dark so event chips remain visible */
+.dark-mode .calendar { background: #07101a !important; }
+/* Weekday labels should be bold per user request */
+.calendar-week-days div { font-weight: 700; }
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px; /* small gap replaces hard borders */
+  width: 100%;
+}
+
+.calendar-day {
+  aspect-ratio: 1 / 1;    /* keeps the box square */
+  border: none; /* remove hard borders */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 6px; 
+  font-size: 1rem; 
+  height: 120px;
+  overflow: auto;
+}
+
+.calendar-day:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  background-color: rgba(255,255,255,0.6); /* subtle hover highlight */
+}
+
+.calendar-day.empty {
+  background-color: #fafafa;
+}
+
+.day-number {
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+
+.event-line {
+  width: 100%;
+  height: 18px;
+  margin-top: 3px;
+  border-radius: 4px;
+  font-size: 0.75em;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.calendar-day.today {
+  border: none !important; /* override previous highlight border to avoid reintroducing lines */
+  box-shadow: 0 0 0 2px rgba(47,197,243,0.15) inset; /* subtle inset glow instead */
+}
+
+/* make sure no other rules elsewhere reintroduce hard borders */
+.calendar-day { border: none !important; }
+
+.dark-mode body { background: #0f1720 !important; color: #e6eef6 !important; }
+  .dark-mode .calendar { background: #0b1220 !important; color: #e6eef6 !important; }
+  .dark-mode .calendar-header { background: #0f5466 !important; }
+  .dark-mode .calendar-week-days div { background: #0f5466 !important; }
+        
+        .settings-panel h3 { margin:0 0 8px 0; }
+        .settings-panel button { padding:6px 10px; border-radius:6px; cursor:pointer; }
+
+/* Prevent page-specific CSS from reintroducing a full-width blue header strip */
+header, header .navbar { background: transparent !important; box-shadow: none !important; }
+header hr { display: none !important; }
+

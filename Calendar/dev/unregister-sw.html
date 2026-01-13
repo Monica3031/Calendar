@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unregister Service Workers</title>
+  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;padding:20px}</style>
+</head>
+<body>
+  <h3>Service Worker Dev Utilities</h3>
+  <button id="unregister">Unregister all service workers</button>
+  <button id="clearcaches">Clear caches</button>
+  <pre id="out"></pre>
+  <script>
+    const out = document.getElementById('out');
+    function log(s){ out.textContent += s + "\n"; }
+    document.getElementById('unregister').addEventListener('click', async () => {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) {
+        await r.unregister();
+        log('Unregistered: ' + (r.scope || 'unknown'));
+      }
+      log('Done. Reload pages to pick up changes.');
+    });
+    document.getElementById('clearcaches').addEventListener('click', async () => {
+      const keys = await caches.keys();
+      for (const k of keys) { await caches.delete(k); log('Deleted cache: ' + k); }
+      log('Cache cleared');
+    });
+  </script>
+</body>
+</html>

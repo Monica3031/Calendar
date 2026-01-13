@@ -1,0 +1,125 @@
+* {
+  box-sizing: border-box;
+  font-family: consolas;
+}
+ul {list-style-type: none;}
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: consolas;
+  background: var(--cal-bg);
+  margin: 0;
+}
+
+/* menu appearance is controlled globally in calendar.css to keep all pages consistent */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 80vh;
+  margin-top: 30px;
+}
+
+form {
+  background: #fff;
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(44, 197, 243, 0.10);
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #b2e4f7;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+input:focus {
+  outline: none;
+  border-color: #2fc5f3;
+}
+button {
+  background: #2fc5f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #054d87;
+}
+h2 {
+  color: #336b73;
+  margin-bottom: 10px;
+}
+p {
+  margin: 8px 0;
+  font-size: 1rem;
+}
+hr {
+  border: none;
+  border-top: 1px solid #b2e4f7;
+  margin: 24px 0;
+}
+@media screen and (max-width: 500px) {
+  .container {
+    margin-top: 10px;
+  }
+  form {
+    padding: 16px 8px;
+    max-width: 95vw;
+  }
+}
+
+footer {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 20px 0;
+}
+
+.dark-mode body { background: #0f1720 !important; color: #e6eef6 !important; }
+  .dark-mode .calendar { background: #0b1220 !important; color: #e6eef6 !important; }
+  .dark-mode .calendar-header { background: #0f5466 !important; }
+  .dark-mode .calendar-week-days div { background: #0f5466 !important; }
+        
+        .settings-panel h3 { margin:0 0 8px 0; }
+        .settings-panel button { padding:6px 10px; border-radius:6px; cursor:pointer; }
+
+/* Dark mode: style login/register forms to match dark background */
+.dark-mode form {
+  background: #07101a !important;
+  color: #e6eef6 !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6) !important;
+  border: 1px solid rgba(255,255,255,0.02) !important;
+}
+.dark-mode input[type="text"],
+.dark-mode input[type="email"],
+.dark-mode input[type="password"] {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  color: #e6eef6 !important;
+}
+.dark-mode input:focus { border-color: rgba(47,197,243,0.6) !important; }
+.dark-mode button { background: #0ea5c9 !important; color: #081218 !important; }
+
+/* Keep header transparent on the index/login page so the visible .menu box is the only header visual */
+header, header .navbar { background: transparent !important; box-shadow: none !important; }
+header hr { display: none !important; }
+

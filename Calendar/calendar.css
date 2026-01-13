@@ -1,0 +1,282 @@
+/* calendar.css */
+* { 
+    box-sizing: border-box; 
+    padding: 0; 
+    margin: 0; 
+}
+ul { 
+    list-style-type: none; 
+}
+
+/* Palette variables (defaults) */
+:root {
+  --cal-bg: linear-gradient(#336b73, #12b7c3, #ffffff);
+  --cal-foreground: #222222;
+  --cal-accent: #20caf0;
+  --cal-accent-strong: #1abc9c;
+  --cal-muted: #eee;
+  --cal-contrast: #f2f2f2;
+}
+
+/* Professional palette: muted blues and neutral backgrounds */
+.palette-professional {
+  --cal-bg: #f7fafc;
+  --cal-foreground: #0f1720;
+  --cal-accent: #0ea5c9;
+  --cal-accent-strong: #04748f;
+  --cal-muted: #f1f5f9;
+  --cal-contrast: #ffffff;
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+    background: var(--cal-bg); 
+    color: var(--cal-foreground); 
+}
+
+/* --- Navbar and Icon Helpers --- */
+.navbar {
+  display: flex; /* Using flex for layout */
+  justify-content: center;
+  align-items: center;
+  gap: 0.375rem; /* reduced by ~2px to tighten icon spacing */
+  /* dropdowns must be able to overflow the navbar; hide can clip absolutely positioned menus */
+  overflow: visible;
+  position: relative;
+  z-index: 100100; /* Defensive: keep navbar above other page content */
+  background: transparent; /* removed global blue background so menu box controls visual */
+  color: var(--cal-contrast);
+  padding: 0; /* keep header compact; page-specific CSS can add spacing when needed */
+}
+
+.navbar a {
+  float: none !important;
+  display: inline-block;
+  color: var(--cal-contrast);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.icon-only-link { 
+  padding:4px; 
+    display:inline-flex; 
+    align-items:center; 
+    justify-content:center; 
+}
+.navbar a:hover,
+.dropdown:hover .dropbtn {
+    background-color: rgba(0,0,0,0.06);
+}
+
+/* --- Dropdown Specific Styles --- */
+.dropdown {
+    float: none !important;
+    overflow: visible;
+    position: relative; /* Essential for dropdown positioning */
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: var(--cal-contrast); /* use contrast color so buttons remain readable on transparent header */
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  /* must sit above the navbar (which uses 100100) */
+  z-index: 100200;
+    pointer-events: auto !important; /* Ensure content is clickable */
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block; /* FIX: Added display: block to ensure links stack vertically */
+    text-align: left;
+}
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* --- Dropdown Visibility (The Fix) --- */
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content,
+.dropdown.open .dropdown-content {
+    /* Combined all visibility rules and used !important for guaranteed display */
+    display: block !important; 
+}
+
+
+/* --- Dark Mode Styles --- */
+.dark-mode body { background: #0f1720 !important; color: #e6eef6 !important; }
+.dark-mode .calendar { background: #0b1220 !important; color: #e6eef6 !important; }
+.dark-mode .menu { background: #0b1220 !important; }
+.dark-mode .menu a { color: #cfeefc !important; }
+.dark-mode .calendar-header { background: var(--cal-accent-strong) !important; }
+.dark-mode .calendar-week-days div { background: var(--cal-accent-strong) !important; }
+
+/* Ensure category management table is readable in dark mode */
+.dark-mode #categories-table th,
+.dark-mode #categories-table td {
+  color: #ffffff !important;
+}
+.dark-mode #categories-table thead tr {
+  border-bottom-color: rgba(255,255,255,0.12) !important;
+}
+/* Make action links/buttons visible in dark mode */
+.dark-mode #categories-table a,
+.dark-mode #categories-table button {
+  color: #ffffff !important;
+}
+
+/* Keep primary action buttons (edit/delete) readable with black text on lighter action backgrounds */
+.dark-mode #categories-table .edit-btn,
+.dark-mode #categories-table .delete-btn {
+  color: #000000 !important;
+}
+
+/* --- Settings Panel Styles --- */
+.settings-panel h3 { margin:0 0 8px 0; }
+.settings-panel button { padding:6px 10px; border-radius:6px; cursor:pointer; }
+
+/* --- Calendar Views (Existing styles) --- */
+.month {
+  padding: 70px 25px;
+  width: 100%;
+  background: var(--cal-accent-strong);
+  text-align: center;
+}
+.month ul { margin: 0; padding: 0; }
+.month ul li {
+  color: white;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.month .prev { float: left; padding-top: 10px; }
+.month .next { float: right; padding-top: 10px; }
+.weekdays { margin: 0; padding: 10px 0; background-color: #ddd; }
+.weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666;
+  text-align: center;
+}
+.days { padding: 10px 0; background: #eee; margin: 0; }
+.days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color: #777;
+}
+.days li .active {
+  padding: 5px;
+  background: var(--cal-accent-strong);
+  color: white !important
+}
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+  .weekdays li, .days li {width: 13.1%;}
+}
+@media screen and (max-width: 420px) {
+  .weekdays li, .days li {width: 12.5%;}
+  .days li .active {padding: 2px;}
+}
+@media screen and (max-width: 290px) {
+  .weekdays li, .days li {width: 12.2%;}
+}
+
+/* ------------------------------------------------------------------
+  Site-wide header safety overrides
+  - Ensure no page reintroduces a full-width blue header strip.
+  - Hide the decorative <hr> after header (many pages include it in templates).
+  - Keep the compact .menu visually distinct (white box) everywhere.
+  These use high specificity and !important to defeat inline/page CSS where needed.
+  ------------------------------------------------------------------ */
+header, header .navbar { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
+header hr { display: none !important; }
+.navbar { background: transparent !important; }
+.navbar .menu {
+  background: var(--cal-accent) !important;
+  color: var(--cal-contrast) !important;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.12) !important;
+  border-radius: 10px !important;
+  padding: 4px !important;
+  /* Make menu items sit tightly together; 2px is the requested spacing between icons */
+  display: flex !important;
+  align-items: center !important;
+  gap: 2px !important;
+  /* anchored inside header; no manual offset */
+  position: static !important;
+  top: auto !important;
+  z-index: 100200 !important;
+}
+
+/* Ensure links and inline buttons inside the menu center their content */
+.navbar .menu a, .navbar .menu button { color: var(--cal-contrast) !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; padding: 6px 3px !important; }
+.navbar .menu img.nav-icon { display: block !important; margin: 0 auto !important; /* normalize icon box */ width: 22px !important; height: 22px !important; object-fit: contain !important; }
+
+/* Make icon-only links a fixed square so icons vertically align reliably */
+.icon-only-link, .icon-only { width: 40px !important; height: 40px !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; }
+
+/* Ensure icon-only buttons have no baseline/text artifacts and no default button chrome */
+.icon-only { line-height: 0 !important; font-size: 0 !important; border: none !important; background: transparent !important; margin: 0 !important; }
+.navbar .menu button { border: none !important; background: transparent !important; cursor: pointer !important; }
+
+header, header .navbar, nav.navbar, .site-topbar { background: transparent !important; box-shadow: none !important; padding: 0 !important; }
+
+/* Ensure the compact menu remains visible and elevated using the site accent */
+.navbar .menu { background: var(--cal-accent) !important; color: var(--cal-contrast) !important; box-shadow: 0 1px 6px rgba(0,0,0,0.12) !important; }
+
+/* Constrain calendar card width so inner .calendar-header cannot paint full viewport width */
+.calendar { margin-left: auto !important; margin-right: auto !important; max-width: 1200px !important; box-sizing: border-box !important; }
+.calendar-header { margin-left: auto !important; margin-right: auto !important; max-width: 1200px !important; box-sizing: border-box !important; border-radius: inherit; }
+
+/* Defensive: ensure immediate top-level containers don't carry full-width backgrounds */
+body > .container, html > body > .container { background: transparent !important; }
+body, html { background: var(--cal-bg) !important; }
+
+
+
+/* Settings page: round corners for buttons on the settings page only */
+#categories-management button,
+#add-category-btn,
+#save-theme-btn,
+#clear-theme-btn,
+#categories-table button {
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+}
+
+/* Slightly larger radius for primary save button */
+#save-theme-btn {
+  border-radius: 10px !important;
+}
+
+/* Light mode: make settings buttons blue with white text (scoped; will not apply when html.dark-mode is present) */
+html:not(.dark-mode) #add-category-btn,
+html:not(.dark-mode) #save-theme-btn,
+html:not(.dark-mode) #clear-theme-btn,
+html:not(.dark-mode) #categories-management button,
+html:not(.dark-mode) #categories-table button {
+  background: var(--cal-accent) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+

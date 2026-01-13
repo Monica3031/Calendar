@@ -1,0 +1,192 @@
+
+/* Basic reset and typography */
+* { padding: 0; margin: 0; box-sizing: border-box; }
+html, body { height: 100%; /* Ensure page can scroll horizontally even if other CSS sets overflow:hidden */ overflow-x: auto !important; overflow-y: visible !important; }
+/* Allow horizontal scrolling when content is wider than viewport */
+body { flex-direction: column; align-items: center; height: 100vh; width: 100%; background: var(--cal-bg); overflow-x: auto !important; overflow-y: visible !important; -webkit-overflow-scrolling: touch; }
+
+/* Ensure main container doesn't clip horizontal scroll (some other styles set overflow:hidden) */
+.container, .calendar, .schedule-container { overflow-x: visible !important; }
+
+/* Ensure header stretches full width so .navbar can center its contents */
+.container > header { width: 100%; box-sizing: border-box; }
+/* Robust centering: use flexbox and limit navbar width to match the calendar container */
+header { display:flex; justify-content:center; align-items:center; width:100%; box-sizing:border-box; position:relative; }
+header .navbar { display:flex; justify-content:center; align-items:center; width:100%; margin:0 auto; box-sizing:border-box; }
+/* Ensure children can't float the navbar away */
+header .navbar > * { float: none !important; display: inline-flex !important; vertical-align: middle !important; }
+/* clearfix for any older float-based markup */
+header .navbar::after { content: ""; display: table; clear: both; }
+/* menu formatting is centralized in calendar.css */
+	.event-box { padding:6px 8px; margin:4px 0; border-radius:6px; color:#000; font-size:11px; display:block; background:transparent; }
+
+/* Navbar: keep the visible menu compact & centered; prevent full-width colored bar */
+.navbar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	text-align: center;
+	max-width: 1200px;
+	margin: 0 auto;
+	background: transparent; /* override global header background so only .menu shows */
+	box-sizing: border-box;
+}
+/* Navbar layout is kept here; visual/menu styling is centralized in calendar.css */
+.navbar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	text-align: center;
+	max-width: 1200px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+/* Per-page icon/link sizing moved to calendar.css; avoid per-page menu overrides here. */
+
+/* Make the Week View icon a little larger so it visually matches other icons */
+
+/* Container & Calendar box */
+.container { display:flex; flex-direction:column; /* make container size to the calendar/timetable width */ align-items:center; width: auto; padding:6px; margin: 0 auto; }
+.calendar { width: auto; max-width:1200px; background-color: rgba(255,255,255,0.92); border-radius:12px; padding:14px 18px 12px 18px; box-shadow: rgba(100,100,111,0.12) 0px 4px 14px 0px; margin:0; min-width: 640px; }
+.calendar-header { display:flex; justify-content:space-between; width:100%; margin-bottom:0; background:#2fc5f3; color:#fff; border-top-left-radius:8px; border-top-right-radius:8px; padding:8px 18px 6px 18px; }
+.month-year-controls, .year-picker { display:flex; align-items:center; gap:10px; }
+.calendar-week-days { display:grid; grid-template-columns: repeat(7, 1fr); width:100%; text-align:center; font-weight:bold; font-size:1.1rem; color:#fff; margin:0; overflow:hidden; border-bottom-left-radius:8px; border-bottom-right-radius:8px; }
+.calendar-week-days div { padding:0; background-color:#2fc5f3; }
+
+/* Ensure the week view (week.js) uses the same connected header style */
+.calendar-body { padding: 0; margin: 0; }
+.calendar-days.week-view { display: grid; grid-template-columns: repeat(7, 1fr); width:100%; text-align:center; font-weight:bold; font-size:1.1rem; color:#fff; margin:0; overflow:hidden; background:#2fc5f3; border-bottom-left-radius:8px; border-bottom-right-radius:8px; }
+.calendar-days.week-view > div { padding:0; }
+
+/* Week arrows styling */
+.week-picker .week-change {
+	display:inline-block;
+	background:#2fc5f3;
+	color:#fff;
+	border-radius:8px;
+	padding:4px 8px;
+	cursor:pointer;
+	font-weight:700;
+	border: none; /* remove default border */
+	-webkit-appearance: none; appearance: none;
+}
+.week-picker .week-change:hover { background:#24a9c6; }
+
+/* Schedule table - consolidated */
+.schedule-container { margin-top:20px; width:100%; overflow:auto; -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y; padding-left:18px; padding-right:18px; box-sizing: border-box; display:flex; justify-content:center; }
+/* center the schedule table; allow it to be wider than container but keep it centered */
+.schedule-table { min-width: 640px; width:auto; border-collapse:collapse; table-layout:auto; background:#fff; margin-top:10px; box-shadow:0 2px 8px rgba(44,197,243,0.10); border-radius:12px; }
+.schedule-table th, .schedule-table td { border:1px solid #eee; padding:6px 4px; min-width:70px; height:48px; text-align:center; overflow:visible; white-space:nowrap; vertical-align:top; }
+.schedule-table thead th { background:#2fc5f3; color:#fff; font-weight:700; padding:8px; }
+.schedule-table thead th span { display:block; color:#fff; font-size:1rem; font-weight:600; }
+.schedule-table th:first-child { background:#2fc5f3; font-weight:bold; color:#fff; width:90px; }
+.schedule-table td:first-child { background:#fff; font-weight:600; color:#000; width:90px; }
+.schedule-table td.time-cell { width:90px; background:#fff; text-align:center; font-weight:600; color:#000; position:sticky; left:0; z-index:2; }
+.schedule-table td.event-cell { height:44px; padding:4px; background:#fff; }
+.schedule-table td.event-cell:hover { background:#f3fbff; }
+
+/* Event box */
+.event-box { padding:3px 5px; margin:1px 0; border-radius:4px; color:#000; font-size:12px; display:block; background:transparent; }
+.event-box:hover { opacity:0.95; transform:translateY(-1px); }
+.event-box.event { box-shadow:0 1px 6px rgba(44,197,243,0.10); font-weight:600; }
+
+/* Event cell layout */
+.event-cell { position:relative; min-height:0; height:auto; }
+.event-cell.multiple-events { padding:0; }
+.event-cell .event { position:relative; border-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,0.08); font-size:12px; background:#e3e3e3; color:#222; margin:0 1px; overflow:hidden; cursor:pointer; transition:box-shadow .2s; }
+.event-cell .event:hover { box-shadow:0 2px 8px rgba(0,0,0,0.18); z-index:10; }
+
+/* Event list and panel */
+.add-event-form { margin-top:20px; display:flex; gap:10px; background:#eaf7fa; color:#1ba2d7; }
+.event-list { display:flex; flex-direction:column; gap:1rem; padding:1.5rem; }
+.events-body { max-height:400px; overflow-y:auto; padding:20px; }
+
+/* Date/time formatting */
+.date-time-formate { height:4rem; width:100%; display:flex; justify-content:center; align-items:center; margin-bottom:2rem; }
+.day-text-formate { font-size:1.4rem; padding-right:5%; border-right:3px solid #28a8d3; }
+.date-time-value { display:block; position:relative; text-align:center; padding-left:5%; }
+.time-formate { font-size:1.5rem; }
+
+/* Event form (modal content) */
+.event-form { display:flex; flex-direction:column; gap:0.75rem; background-color:#fff; padding:1rem; border-radius:8px; box-shadow: rgba(100,100,111,0.12) 0px 4px 14px 0px; }
+.event-form label { font-weight:bold; color:#336b73; }
+.event-form input[type="date"], .event-form input[type="time"], .event-form input[type="text"], .event-form textarea { width:100%; padding:10px; border-radius:6px; border:1px solid #b2e4f7; font-size:1rem; box-sizing:border-box; transition:border-color .2s ease; }
+.event-form input:focus, .event-form textarea:focus { outline:none; border-color:#2fc5f3; }
+.event-form .button-container { display:flex; justify-content:flex-end; gap:10px; margin-top:1rem; }
+.event-form button { background:#2fc5f3; color:#fff; border:none; border-radius:8px; padding:8px 16px; font-weight:bold; cursor:pointer; }
+.event-form button:hover { background:#054d87; }
+.event-form #cell-event-delete { background:#e74c3c; }
+.event-form select { width:100%; padding:10px; border-radius:6px; border:1px solid #b2e4f7; font-size:1rem; box-sizing:border-box; }
+
+/* Category colors */
+.category-work { background-color:#fce77d; border-left:5px solid #f9d749; color:#000; }
+.category-friends { background-color:#a8d5e2; border-left:5px solid #6cbce8; color:#000; }
+.category-family { background-color:#d1b1e6; border-left:5px solid #af84d1; color:#000; }
+.category-other { background-color:#b0c9a7; border-left:5px solid #85a87b; color:#000; }
+
+/* Modal styles */
+.modal { display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.4); padding-top:60px; }
+.modal-content { background-color:#fefefe; margin:5% auto; padding:20px; border:1px solid #888; width:80%; max-width:600px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.3); position:relative; }
+#event-modal { display:none; }
+.close { color:#aaa; position:absolute; top:10px; right:25px; font-size:28px; font-weight:bold; cursor:pointer; }
+.close:hover, .close:focus { color:black; text-decoration:none; }
+
+/* Small helpers */
+.schedule-table thead th:first-child { position:sticky; left:0; z-index:3; background:#2fc5f3; color:#fff; }
+.schedule-table .time-cell { position:sticky; left:0; z-index:2; }
+
+/* Add New Event button styling */
+#add-event-btn { background:#2fc5f3; color:#fff; border:none; border-radius:20px; padding:8px 12px; font-weight:700; cursor:pointer; }
+#add-event-btn:hover { background:#24a9c6; }
+
+/* Responsive adjustments for week view */
+@media screen and (max-width: 900px) {
+	.calendar { max-width: 100%; padding: 10px; }
+	.schedule-container { overflow-x: auto; padding-left:12px; padding-right:12px; }
+	/* allow table to shrink further on small devices */
+	.schedule-table { min-width: 640px; table-layout:auto; }
+	.schedule-table th, .schedule-table td { padding:6px 4px; }
+	.schedule-table thead th { position: sticky; top: 0; z-index: 50; }
+	.schedule-table td.time-cell { left: 0; z-index: 60; }
+	/* sticky header backdrop for readability */
+	.schedule-table thead th { background: rgba(47,197,243,0.95); }
+}
+
+@media screen and (max-width: 420px) {
+	.calendar-header { padding: 8px; }
+	.week-picker .week-change { padding: 6px; }
+	.schedule-table { min-width: 560px; }
+	.schedule-table th, .schedule-table td { padding:5px 3px; font-size:0.78rem; }
+	.event-box { font-size:11px; padding:2px 3px; }
+	.modal-content { width:95%; max-width:360px; }
+	.calendar-week-days, .calendar-days.week-view { font-size:0.9rem; }
+}
+
+/* Sticky/time column visual */
+.schedule-table thead th:first-child,
+.schedule-table td.time-cell { box-shadow: 2px 0 6px rgba(0,0,0,0.06); }
+
+/* Dark mode tweaks */
+.dark-mode .schedule-table thead th { background: #0f5466 !important; }
+.dark-mode .schedule-table td.time-cell { background: #07101a !important; color: #e6eef6 !important; }
+.dark-mode .event-box { color: #e6eef6; }
+
+.dark-mode body { background: #0f1720 !important; color: #e6eef6 !important; }
+        .dark-mode .calendar { background: #0b1220 !important; color: #e6eef6 !important; }
+	/* dark-mode .menu rules centralized in calendar.css */
+        .dark-mode .calendar-header { background: #0f5466 !important; }
+        .dark-mode .calendar-week-days div { background: #0f5466 !important; }
+        
+        .settings-panel h3 { margin:0 0 8px 0; }
+        .settings-panel button { padding:6px 10px; border-radius:6px; cursor:pointer; }
+
+/* Override global navbar styling for week page: keep the navbar transparent.
+   Per-page menu visuals are removed; calendar.css provides the menu styling. */
+header .navbar {
+	background: transparent !important;
+	padding: 0 !important;
+	box-shadow: none !important;
+}
+/* Per-page navbar visual overrides removed: see calendar.css for menu visuals */

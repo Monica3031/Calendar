@@ -1,0 +1,312 @@
+/* Body and layout */
+body {
+  width: 100%;
+  margin: 0;
+  /* inherit global/site font */
+  background: var(--cal-bg);
+}
+
+/* Menu bar */
+/* menu appearance is controlled globally in calendar.css to keep all pages consistent */
+
+/* Main container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  width: 100%;
+}
+
+/* Calendar box */
+.calendar {
+  height: auto;
+  width: max-content;
+  /* translucent card so page background gradient shows through */
+  background-color: rgba(255,255,255,0.92);
+  border-radius: 25px;
+  padding: 35px 50px 0px 50px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+/* Calendar header */
+.calendar-header { display:flex; justify-content:space-between; width:100%; margin-bottom:10px; background:#2fc5f3; color:#fff; border-radius:8px; padding:10px; }
+
+/* Day selector: place arrows and date picker on one horizontal line */
+.day-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.day-selector #date-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.day-change {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.15);
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  font-weight: bold;
+  border: none; /* remove browser default button border */
+  color: #fff; /* ensure arrow/icon is white */
+  -webkit-appearance: none; appearance: none; /* remove native button styling */
+}
+.day-change:hover { background: rgba(255,255,255,0.25); }
+.day-change pre { display: inline; margin: 0; padding: 0; }
+.day-name { font-weight: 700; color: #fff; }
+.day-selector input[type="date"] { padding: 6px 8px; border-radius: 6px; border: none; }
+
+/* Day view row */
+.schedule-container {
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.schedule-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.schedule-table th, .schedule-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-width: 80px;
+}
+
+.schedule-table th {
+  background: #f4f4f4;
+}
+
+.schedule-table td.event {
+  background: #cce5ff;
+  font-weight: bold;
+}
+
+/* Add-event form styles */
+.add-event-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.add-event-form input,
+.add-event-form textarea {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #b2e4f7;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.add-event-form button {
+  background: #2fc5f3;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-event-form button:hover {
+  background: #054d87;
+}
+
+/* Date and time display */
+.date-time-formate {
+  height: 4rem;
+  width: 100%;
+  font-family: consolas;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem; 
+}
+
+.day-text-formate {
+  font-family: consolas;
+  font-size: 1.4rem;
+  padding-right: 5%;
+  border-right: 3px solid #28a8d3;
+}
+
+.date-time-value {
+  position: relative;
+  text-align: center;
+  padding-left: 5%;
+}
+
+.time-formate {
+  font-size: 1.5rem;
+}
+
+.date-formate {
+  font-size: 1.1rem;
+}
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-bottom: 2rem;
+}
+.event-box {
+  background: #cce5ff;
+  border-radius: 10px;
+  padding: 8px 12px; /* add vertical and horizontal padding for spacing */
+  box-shadow: 0 2px 8px rgba(44, 197, 243, 0.15);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  max-width: 100%;
+}
+.event-box strong,
+.event-box span,
+.event-box em {
+  margin: 0;
+  padding: 0;
+  line-height: 1.1;
+  font-size: inherit;
+}
+
+.event-box:hover {
+  background: #2fc5f3;
+  color: #fff;
+}
+
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1000;
+  left: 0; 
+  top: 0;
+  width: 100%; 
+  height: 100%;
+  overflow: auto;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: white; 
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.event-form label {
+  font-weight: bold;
+  color: #336b73; /* Your site's primary text color */
+}
+
+.event-form input[type="date"],
+.event-form input[type="time"],
+.event-form input[type="text"],
+.event-form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #b2e4f7; /* Matching your site's blue shades */
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.event-form input:focus,
+.event-form textarea:focus {
+  outline: none;
+  border-color: #2fc5f3; /* Highlight color on focus */
+}
+
+.event-form .button-container {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.event-form button {
+  background: #2fc5f3; /* Your site's button color */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.event-form button:hover {
+  background: #054d87; /* Darker hover color */
+}
+
+/* Specific styling for the delete button */
+.event-form #cell-event-delete {
+  background: #e74c3c; /* A distinct color for delete */
+}
+
+/* ...existing code... */
+
+/* Modal form styling (already exists, but make sure it's consistent) */
+.event-form select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #b2e4f7;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Style for the Add New Event button - match week.css */
+#add-event-btn { background:#2fc5f3; color:#fff; border:none; border-radius:20px; padding:8px 12px; font-weight:700; cursor:pointer; }
+#add-event-btn:hover { background:#24a9c6; }
+
+.dark-mode body { background: #0f1720 !important; color: #e6eef6 !important; }
+  .dark-mode .calendar { background: #0b1220 !important; color: #e6eef6 !important; }
+  .dark-mode .calendar-header { background: #0f5466 !important; }
+  .dark-mode .calendar-week-days div { background: #0f5466 !important; }
+        
+        .settings-panel h3 { margin:0 0 8px 0; }
+        .settings-panel button { padding:6px 10px; border-radius:6px; cursor:pointer; }
+
+/* Ensure header doesn't show a full-width colored bar on this page */
+header, header .navbar { background: transparent !important; box-shadow: none !important; }
+header hr { display: none !important; }
+
