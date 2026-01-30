@@ -16,17 +16,35 @@ function sanitize($data) {
     return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
 }
 
+// Temporary auth debug logger (dev only). Writes minimal info to assets/auth_debug.log
+function write_auth_debug($line) {
+  $path = __DIR__ . '/assets/auth_debug.log';
+  $ts = date('c');
+  @file_put_contents($path, "[{$ts}] {$line}\n", FILE_APPEND | LOCK_EX);
+}
+
 $login_error = $register_error = $register_success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // LOGIN
   if (isset($_POST['login_submit'])) {
-    $email = sanitize($_POST['login_email']);
-    $pass = sanitize($_POST['login_password']);
+    // Use a sanitized email (not HTML-escaped) and raw trimmed password for verification
+    $email = filter_var(trim($_POST['login_email'] ?? ''), FILTER_SANITIZE_EMAIL);
+    $pass = isset($_POST['login_password']) ? trim($_POST['login_password']) : '';
     if ($conn && is_object($conn) && method_exists($conn, 'prepare')) {
       $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
       $stmt->execute([$email]);
       $user = $stmt->fetch();
+      // Log minimal debug info to help diagnose login failures
+      try {
+          if ($user) {
+              $hashLen = isset($user['password']) ? strlen($user['password']) : 0;
+              $v = password_verify($pass, $user['password']) ? 'MATCH' : 'NO_MATCH';
+              write_auth_debug("login email={$email} user_id={$user['id']} hash_len={$hashLen} verify={$v}");
+          } else {
+              write_auth_debug("login email={$email} user_not_found");
+          }
+      } catch (Throwable $t) { write_auth_debug('login exception: ' . $t->getMessage()); }
       if ($user && password_verify($pass, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['email'] = $user['email'];
@@ -87,20 +105,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include 'templates/header/header-fragment.php'; ?>
     <div class="container">
       <h2>Login</h2>
-      <form method="post">
-        <input type="email" name="login_email" placeholder="Email" required />
-        <input type="password" name="login_password" placeholder="Password" required />
+      <form method="post" autocomplete="on">
+        <input type="email" name="login_email" placeholder="Email" required autocomplete="email" />
+        <input type="password" name="login_password" placeholder="Password" required autocomplete="current-password" />
         <button type="submit" name="login_submit">Login</button>
       </form>
       <?php if($login_error) echo "<p style='color:red;'>$login_error</p>"; ?>
       <hr />
       <h2>Register</h2>
-      <form method="post">
-        <input type="text" name="first_name" placeholder="First name" required value="<?php if (isset($_POST['first_name'])) echo $_POST['first_name']; ?>" />
-        <input type="text" name="last_name" placeholder="Last name" required value="<?php if (isset($_POST['last_name'])) echo $_POST['last_name']; ?>" />
-        <input type="email" name="email" placeholder="Email Address" required value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" />
-        <input type="password" name="pass1" placeholder="Password" required />
-        <input type="password" name="pass2" placeholder="Confirm password" required />
+      <form method="post" autocomplete="on">
+        <input type="text" name="first_name" placeholder="First name" required value="<?php if (isset($_POST['first_name'])) echo $_POST['first_name']; ?>" autocomplete="given-name" />
+        <input type="text" name="last_name" placeholder="Last name" required value="<?php if (isset($_POST['last_name'])) echo $_POST['last_name']; ?>" autocomplete="family-name" />
+        <input type="email" name="email" placeholder="Email Address" required value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" autocomplete="email" />
+        <input type="password" name="pass1" placeholder="Password" required autocomplete="new-password" />
+        <input type="password" name="pass2" placeholder="Confirm password" required autocomplete="new-password" />
         <button type="submit" name="register_submit">Register</button>
       </form>
       <?php if($register_error) echo "<p style='color:red;'>$register_error</p>"; ?>

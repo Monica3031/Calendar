@@ -1,7 +1,12 @@
-
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // To-Do page using the day.php layout so formatting matches.
 require_once __DIR__ . '/assets/auth.php';
+if (!function_exists('current_user_id')) {
+    die("Fatal Error: auth.php was loaded, but current_user_id() is missing. Check if auth.php is empty or corrupted.");
+}
 $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); if ($base === '/' || $base === '.') $base = '';
 $currentUserId = current_user_id();
 ?>
