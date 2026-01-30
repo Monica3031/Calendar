@@ -19,7 +19,7 @@ A comprehensive, modern calendar application built with PHP and vanilla JavaScri
 - Create, edit, and delete events with ease
 - Recurring events support (daily, weekly, monthly)
 - Event categories and color-coding
-- Multi-user event visibility and sharing
+- Personal event privacy (each user sees only their own events)
 
 ### 👤 User Features
 - Secure user registration and authentication
@@ -31,11 +31,11 @@ A comprehensive, modern calendar application built with PHP and vanilla JavaScri
 - Install on any device (mobile, tablet, desktop)
 - Offline capability
 - Native app-like experience
-- Push notification support
+- Browser notification support
 - Responsive design for all screen sizes
 
 ### 🎨 Customization
-- Dark mode / Light mode toggle
+- Theme modes (dark, light, system)
 - Category-based color coding for events
 - Customizable event details
 
@@ -121,7 +121,7 @@ Then navigate to `http://localhost:8000/index.php`
 
 ### API Endpoints
 The application uses a RESTful API design with JSON request/response format:
-- `CRUD.php`: Main API endpoint (~1100 lines) handling all CRUD operations
+- `CRUD.php`: Main API endpoint (~622 lines) handling all CRUD operations
 - Event creation, updates, deletion, and retrieval
 - Recurrence group management
 - User-specific data filtering
